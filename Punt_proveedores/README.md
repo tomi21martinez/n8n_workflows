@@ -7,15 +7,15 @@ _Última actualización: 2025-10-06_
 ## 📦 Contenido del repositorio
 ### `Chat_proveedores/`
 ```
-
+Chat_proveedores.json
 ```
-_No se han detectado JSONs en este directorio._
+
 
 ### `Conexion_APIs/`
 ```
-
+Conexion_APIs.json
 ```
-_No se han detectado JSONs en este directorio._
+
 
 ## 🧩 Propósito y arquitectura (resumen)
 Este conjunto de workflows orquesta un **chat de proveedores** para Punt, con automatizaciones que conectan el front/UX conversacional con **servicios y APIs** (ver `Conexion_APIs/`). A alto nivel:
