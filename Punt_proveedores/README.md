@@ -1,116 +1,137 @@
-# Chat de Proveedores (DEV) – README
+# Chat de Proveedores (DEV)
 
-_Última actualización: 2025-10-06_
+**Última actualización:** 2025-10-06  
+**Estado:** DEV – Este proyecto se encuentra en fase de desarrollo. No utilizar en producción.
 
-> **Estado:** DEV · Estos flujos aún están en desarrollo y pueden cambiar sin previo aviso. No usar en producción.
+---
+
+## 🧩 Descripción general
+
+El **Chat de Proveedores** es un sistema conversacional diseñado para **centralizar la comunicación con los proveedores de Punt**, automatizando consultas, intercambio de información y procesos internos relacionados con pedidos, catálogos y disponibilidad de productos.
+
+El objetivo principal es **reducir la intervención manual** en la gestión de proveedores, permitiendo un flujo de comunicación fluido, trazable y conectado directamente con los sistemas internos y las APIs de terceros.
+
+Este proyecto está estructurado en dos componentes principales:
+- `Chat_proveedores.json` → flujo conversacional principal  
+- `Conexion_APIs.json` → conectores e integraciones con APIs externas
+
+---
+
+## ⚙️ Arquitectura y funcionamiento
+
+El sistema está desarrollado sobre una **plataforma de automatización tipo n8n/Make**, basada en flujos JSON que orquestan distintos módulos:
+
+### 🔸 1. Chat_proveedores
+Define la **lógica conversacional**, incluyendo:
+- Recepción y procesamiento de mensajes de proveedores  
+- Identificación de intención y enrutamiento según tipo de consulta  
+- Control de contexto de conversación (proveedor, pedido, estado)  
+- Generación de respuestas automáticas en lenguaje natural  
+- Interacción con los módulos de API mediante peticiones HTTP  
+
+Este flujo actúa como **punto de entrada** del sistema y coordina las operaciones entre los distintos servicios conectados.
+
+---
+
+### 🔸 2. Conexion_APIs
+Contiene los **módulos de conexión y datos**, que abstraen la comunicación con sistemas externos, tales como:
+- **APIs de proveedores** (catálogo, pedidos, stocks, tarifas)  
+- **Sistemas internos** de gestión o ERP (Odoo, CRM, bases SQL, etc.)  
+- **Servicios auxiliares** (autenticación, logs, notificaciones, validaciones)
+
+Estas integraciones se gestionan mediante nodos de autenticación, peticiones REST y transformaciones de datos intermedias.  
+El objetivo es permitir la **reutilización modular** de los conectores en distintos flujos.
+
+---
+
+## 💬 Flujo general de comunicación
+
+1. **Entrada del mensaje:** el proveedor envía una consulta (por chat, formulario o API).  
+2. **Procesamiento:** el flujo identifica el tipo de solicitud y extrae los datos relevantes.  
+3. **Integración:** se consulta la API correspondiente (proveedor, catálogo, pedido).  
+4. **Respuesta:** el sistema genera una respuesta estructurada o conversacional y la devuelve al canal de origen.  
+5. **Registro:** se almacena el intercambio para trazabilidad y análisis posterior.
+
+Este proceso está diseñado para ser **asíncrono, extensible y seguro**, con separación entre la lógica de conversación y las credenciales o configuraciones de API.
+
+---
+
+## 🧠 Tecnologías y principios utilizados
+
+| Componente | Descripción |
+|-------------|--------------|
+| **n8n / Make** | Plataforma de orquestación de flujos (workflows) en formato JSON. |
+| **APIs REST** | Comunicación estándar entre servicios (proveedores, catálogos, pedidos). |
+| **HTTP + JSON Schema** | Formato de intercambio y validación de datos. |
+| **PostgreSQL** | Base de datos utilizada para almacenamiento de estado, logs y persistencia de datos intermedios. |
+| **Control de estado** | Mantenimiento de contexto conversacional por sesión o proveedor. |
+| **Logs estructurados** | Registro de ejecución para análisis y debugging. |
+| **Autenticación segura** | Uso de tokens y claves API gestionadas fuera del código. |
+| **Principio de modularidad** | Separación entre lógica conversacional y conexiones externas. |
+
+---
 
 ## 📦 Contenido del repositorio
+
 ### `Chat_proveedores/`
 ```
 Chat_proveedores.json
 ```
-
+Workflow principal del chat.  
+Implementa el flujo de conversación, enrutamiento y llamadas a los módulos de conexión.  
+Versión **DEV**, sin credenciales ni datos sensibles.
 
 ### `Conexion_APIs/`
 ```
 Conexion_APIs.json
 ```
+Conjunto de módulos de integración con APIs externas (proveedores, catálogos, pedidos).  
+Versión **DEV**, sin tokens ni información confidencial.
 
+---
 
-## 🧩 Propósito y arquitectura (resumen)
-Este conjunto de workflows orquesta un **chat de proveedores** para Punt, con automatizaciones que conectan el front/UX conversacional con **servicios y APIs** (ver `Conexion_APIs/`). A alto nivel:
+## 🔐 Seguridad y manejo de credenciales
 
-- **Ingesta y enrutado**: recepción de mensajes, normalización y derivación a intents.
-- **Conectores y datos** (`Conexion_APIs`): módulos que encapsulan llamadas a APIs externas (proveedores, catálogos, estado de pedidos, autenticación, etc.).
-- **Gestión de contexto**: almacenamiento de estado de conversación (sesión, proveedor, pedido) y recuperación de contexto.
-- **Reglas de negocio**: validaciones, políticas de visibilidad, formatos de respuesta y control de errores.
-- **Observabilidad**: logs de ejecución y métricas básicas para diagnóstico durante DEV.
+Todas las credenciales, tokens y claves se eliminan deliberadamente de los archivos incluidos.  
+Para ejecutar los flujos en un entorno real, las credenciales deben configurarse mediante:
+- El **gestor de credenciales de la plataforma** (n8n, Make, etc.)
+- O variables de entorno (`.env`) seguras
 
-## ⚙️ Requisitos previos
-- Node 18+ o Docker (si se usa n8n/Make u otra plataforma de orquestación, ajustar según entorno).
-- Accesos y credenciales a las APIs de proveedores (ver **Variables de entorno**).
-- Base de datos/almacenamiento para estado (p. ej., PostgreSQL/Redis) si aplica al orquestador.
-- URL de callback o webhook pública (ngrok o túnel equivalente) para pruebas locales.
-
-## 🔐 Variables de entorno y secretos
-Crea un archivo `.env` (no lo subas al repo) con al menos:
-
+Ejemplo de configuración esperada:
 ```
-# Identidad app
-APP_ENV=dev
-APP_NAME=chat_proveedores_dev
-
-# Proveedores (ejemplos)
-PROVEEDOR_API_BASE_URL=
-PROVEEDOR_API_KEY=
-
-# Autenticación / OAuth (si aplica)
-OAUTH_CLIENT_ID=
-OAUTH_CLIENT_SECRET=
-OAUTH_TOKEN_URL=
-
-# Almacenamiento (si aplica)
-DATABASE_URL=
-REDIS_URL=
-
-# Webhooks
-PUBLIC_WEBHOOK_URL=
-WEBHOOK_SIGNATURE_SECRET=
-
-# Observabilidad
-LOG_LEVEL=debug
+PROVEEDOR_API_BASE_URL=https://api.proveedor.com
+PROVEEDOR_API_KEY=<tu_clave_aqui>
+DATABASE_URL=postgresql://usuario:contraseña@host:puerto/basededatos
+PUBLIC_WEBHOOK_URL=https://tuservidor.dev/webhook/proveedores
 ```
 
-> Revisa los JSONs en `Conexion_APIs/` para añadir claves específicas de cada conector.
+---
 
-## 🚀 Puesta en marcha (DEV)
-1. **Clona** el repo y copia estos directorios en tu entorno de orquestación (n8n/Make/u otro).
-2. **Importa** los JSONs de `Conexion_APIs` (conectores) y luego los de `Chat_proveedores` (flujos conversacionales).
-3. **Configura credenciales** en el panel del orquestador con las variables del `.env`.
-4. **Ajusta endpoints** de webhooks/HTTP Request dentro de los flujos para que apunten a tu `PUBLIC_WEBHOOK_URL`.
-5. **Activa** los workflows **en sandbox** (nunca en producción).
-6. **Prueba** con casos controlados (mensajes de ejemplo, proveedores mock).
+## 🧱 Estado de desarrollo
 
-> Si un JSON no importa por dependencias, importa primero los conectores base de `Conexion_APIs/`.
+| Módulo | Estado | Descripción |
+|--------|---------|-------------|
+| Chat_proveedores | 🟡 En pruebas | Flujo funcional, pendiente de validación con datos reales |
+| Conexion_APIs | 🟢 Base estable | Estructura modular lista para expansión |
+| PostgreSQL | 🟢 Operativo | Almacenamiento de contexto, logs y datos temporales |
+| Logging / métricas | 🔴 Pendiente | Integración de sistema de monitorización |
+| Documentación técnica | 🟢 Incluida | README y estructura de flujos documentada |
 
-## 🧪 Testing sugerido
-- **Happy path**: consulta de catálogo, disponibilidad y precios para un proveedor conocido.
-- **Errores controlados**: API 4xx/5xx, timeouts y reintentos con backoff.
-- **Datos faltantes**: mensajes incompletos o sin contexto de pedido/proveedor.
-- **Seguridad**: validación de firmas de webhook y sanitización de entradas.
-- **Idempotencia**: reenvío de eventos duplicados.
-- **Internacionalización** (si aplica): formatos de moneda/fecha.
+---
 
-## 📡 Endpoints y triggers (orientativo)
-- **/webhook/proveedores**: entrada de mensajes del chat.
-- **/api/proveedores/:id**: detalle/estado de proveedor.
-- **/api/pedidos/:id**: estado de pedido y líneas.
-- **Tareas programadas**: sincronización periódica de catálogos/estados (cron).
-> Ajusta a los endpoints reales definidos en los JSONs importados.
+## 🧭 Roadmap previsto
 
-## 🧯 Troubleshooting
-- **Import error / credenciales**: verifica que el nombre del credencial en el orquestador coincide con el usado en el JSON.
-- **CORS / webhooks**: usa un túnel (ngrok) y permite la URL exacta en la configuración de la API del proveedor.
-- **429 / rate limits**: habilita colas y límites de concurrencia por conector.
-- **Campos inesperados**: revisa los mapeos en nodos transformadores antes/después de llamadas HTTP.
-- **UTF-8 y acentos**: confirma codificación en nodos/plantillas.
+- [ ] Añadir sistema de logging estructurado con correlación por sesión  
+- [ ] Mejorar manejo de errores y reintentos automáticos  
+- [ ] Integración con el sistema de autenticación de Odoo  
+- [ ] Añadir métricas de uso y rendimiento  
+- [ ] Conectar el flujo con un chatbot front-end para interacción directa  
 
-## 🗺️ Roadmap (DEV)
-- [ ] Catálogo de proveedores unificado y caché.
-- [ ] Reintentos con política exponencial por conector.
-- [ ] Métricas y trazas (OpenTelemetry / logs estructurados).
-- [ ] Tests de contrato para APIs externas.
-- [ ] Plantillas de respuesta multimodal (texto + adjuntos).
+---
 
-## 🤝 Contribución
-- Haz PRs pequeños y enfocados.
-- Incluye **casos de prueba** y **notas de migración** si el cambio afecta a datos.
-- Usa `feat:`, `fix:`, `chore:`, `docs:` en los mensajes de commit.
+## 🧑‍💻 Autores y mantenimiento
 
-## 📝 Licencia y datos
-- Uso interno de Punt, **solo entorno DEV**.
-- No incluir datos sensibles de clientes/proveedores en los ejemplos.
+Proyecto desarrollado por el **Departamento de Innovación de Punt Sistemes**.  
+Responsable técnico: equipo de integración y automatización.  
 
-## 📞 Contacto
-- Equipo de Innovación (Punt) – responsable del chat de proveedores.
-- Incidencias: abrir ticket en el repositorio interno.
+Para incidencias o sugerencias, abrir un *issue* interno o contactar con el equipo de innovación.
