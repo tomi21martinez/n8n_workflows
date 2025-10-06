@@ -1,0 +1,1078 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5efb8266-a264-45e9-a529-a6983b237a2e",
+              "name": "type",
+              "value": "={{ $json.type }}",
+              "type": "string"
+            },
+            {
+              "id": "74cb69c9-e60e-4044-90b9-3d0cb75cee97",
+              "name": "element_id",
+              "value": "={{ $json.element_id }}",
+              "type": "string"
+            },
+            {
+              "id": "18a2490c-6840-4623-91d2-e1cbc110a29a",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "9fb04c59-ffb6-43af-9589-d0a2d30af3cf",
+              "name": "metadata.page_number",
+              "value": "={{ $json.metadata.page_number }}",
+              "type": "number"
+            },
+            {
+              "id": "5043b5c1-e015-40aa-ab00-ffc47aff61d5",
+              "name": "metadata.parent_id",
+              "value": "={{ $json.metadata.parent_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -96,
+        544
+      ],
+      "id": "b03f9a18-8564-469f-ad69-4aa124680192",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b61c2028-42ab-477b-9167-3b5f4c0b08f4",
+              "name": "text1",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        352
+      ],
+      "id": "18dc6cca-584b-4bf9-b1ba-b334dfea5933",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        240,
+        448
+      ],
+      "id": "2ac4f05b-634e-4f0a-b85b-f319a736e4bc",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ab5d2d5-5f0c-413c-a1c5-5d818e520bc5",
+              "name": "Document",
+              "value": "={{ $json.text1 }}",
+              "type": "string"
+            },
+            {
+              "id": "523510c2-f86a-4dde-9997-5fac573c9d06",
+              "name": "Type",
+              "value": "={{ $json.type }}",
+              "type": "string"
+            },
+            {
+              "id": "1213b692-7d75-400e-90ec-5a333b0aacfb",
+              "name": "element_id",
+              "value": "={{ $json.element_id }}",
+              "type": "string"
+            },
+            {
+              "id": "92b5b584-6343-4382-a925-6f3b1c6cc5ef",
+              "name": "texto",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "49b28bf7-ff83-4c0b-86a6-f6cf94c523e8",
+              "name": "metadata.page_number",
+              "value": "={{ $json.metadata.page_number }}",
+              "type": "number"
+            },
+            {
+              "id": "0efa51df-1faf-4710-ac8b-7c646843b02b",
+              "name": "metadata.parent_id",
+              "value": "={{ $json.metadata.parent_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        448
+      ],
+      "id": "973b6031-057e-4560-bb4d-7468a8af0b8b",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1104,
+        448
+      ],
+      "id": "d1ee8548-2429-47bd-bd94-5984212a01f9",
+      "name": "Start"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "Mof",
+        "filter": {
+          "includeTrashed": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -880,
+        448
+      ],
+      "id": "b0fae12b-7134-4fd3-bdd9-a599bbec57db",
+      "name": "Search for new files",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "bcAfKbtfwn6kENF1",
+          "name": "Drive Tomás"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -656,
+        448
+      ],
+      "id": "57ad0bdf-7390-4505-9ad7-0b4acfe4f9b2",
+      "name": "Download files",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "bcAfKbtfwn6kENF1",
+          "name": "Drive Tomás"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://172.18.0.1:8008/general/v0/general",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "include_metadata[]",
+              "value": "text_as_html"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "files",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -432,
+        448
+      ],
+      "id": "d92f3154-584f-4c79-8fbb-5e12aa178be7",
+      "name": "Call unstructured"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b4eef8e9-446c-41b5-9950-607a3b2cd299",
+              "leftValue": "={{ $json.text }}",
+              "rightValue": "^[A-Z].*",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            },
+            {
+              "id": "948ee682-3205-4f24-9d1d-6a52f43a9f0b",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "Title",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        352
+      ],
+      "id": "e460b88e-2b1a-4c82-9c7f-c94cb15c4d35",
+      "name": "Only title"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "texto",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        448
+      ],
+      "id": "688ea895-d812-40d0-8bca-e137fd636589",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "l3FYAm9A25EGK5Ti",
+          "name": "n8n_pdf"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        848,
+        656
+      ],
+      "id": "2931d067-f9f2-43c9-bf3f-c41f64c9bdd4",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "vcj1XOfpBq5w1GA6",
+          "name": "Open AI Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $('Edit Fields2').item.json.texto }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "id",
+                "value": "={{ $('Edit Fields2').item.json.element_id }}"
+              },
+              {
+                "name": "document"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1056,
+        672
+      ],
+      "id": "a3fdf481-a075-4e0e-b683-7f378ddac5e1",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "operation": "checkIfEvaluating"
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        1248
+      ],
+      "id": "e8e1c823-82a8-4220-9340-34e59bb57bd6",
+      "name": "Only if we are evaluating"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91a79047-f1c3-4b16-921e-0c8a45c43320",
+              "name": "chatInput",
+              "value": "={{ $json.question }}",
+              "type": "string"
+            },
+            {
+              "id": "56cb3f48-70b0-4737-b4cd-8563fdd28455",
+              "name": "sessionId",
+              "value": "=pureEval-{{ Math.round(Math.random()*1000) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1296,
+        1328
+      ],
+      "id": "4ecf5c7f-93c6-4455-be25-2b1055bd4431",
+      "name": "Eval Input"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1cgZzr0-D5Kpd6HrKowyoN_fI2dY0dkP9Ljljxix0AlI",
+          "mode": "list",
+          "cachedResultName": "Public Agentic Arena Evaluation Set",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cgZzr0-D5Kpd6HrKowyoN_fI2dY0dkP9Ljljxix0AlI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Eval",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cgZzr0-D5Kpd6HrKowyoN_fI2dY0dkP9Ljljxix0AlI/edit#gid=0"
+        },
+        "limitRows": true
+      },
+      "type": "n8n-nodes-base.evaluationTrigger",
+      "typeVersion": 4.6,
+      "position": [
+        -1504,
+        1328
+      ],
+      "id": "899385eb-c02f-4e1f-a5d6-a8dc6c2822cf",
+      "name": "Eval Set",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mMJwj6gSWhuP4KBb",
+          "name": "Google Sheets account Tomás"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Eval for Correctness",
+        "height": 560,
+        "width": 1024,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        960
+      ],
+      "typeVersion": 1,
+      "id": "8587a788-af0c-4e0a-a04b-0d43815a56cd",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Eval Input\n\nCorrect the _Set-Node_ directly to your Agent, once done",
+        "height": 288,
+        "width": 656,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1552,
+        1216
+      ],
+      "typeVersion": 1,
+      "id": "c148b17d-e097-47cb-802f-9b1cbfbe0f4e",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        720,
+        1344
+      ],
+      "id": "3de9ccc9-d048-42df-bdae-98f1da05a3dc",
+      "name": "Respond to Chat"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9eab8192-200a-4520-afe9-b13c14cd000c",
+              "leftValue": "={{ $json.chatInput }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1088,
+        1328
+      ],
+      "id": "18738406-63e3-45b9-a841-e1f2b0450c59",
+      "name": "Filter Empty Rows"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D1P_B70KYuzLXVhSFGd6t19Q2u7msEenvhUqajwLw7k",
+          "mode": "list",
+          "cachedResultName": "Agentic Arena Dev Eval – Challenge 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D1P_B70KYuzLXVhSFGd6t19Q2u7msEenvhUqajwLw7k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D1P_B70KYuzLXVhSFGd6t19Q2u7msEenvhUqajwLw7k/edit#gid=0"
+        },
+        "outputs": {
+          "values": [
+            {
+              "outputName": "correctness",
+              "outputValue": "={{ $json.Correctness }}"
+            },
+            {
+              "outputName": "agent answer",
+              "outputValue": "={{ $('Agent Output').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        1152
+      ],
+      "id": "5f03238b-bb84-4874-8c05-3114cd1cbbde",
+      "name": "Save Eval"
+    },
+    {
+      "parameters": {
+        "operation": "setMetrics",
+        "expectedAnswer": "={{ $('Eval Set').item.json.answer }}",
+        "actualAnswer": "={{ $json.output || \"No output provided.\" }}",
+        "prompt": "You are an expert factual evaluator assessing the accuracy of answers compared to established ground truths.\n\nEvaluate the factual correctness of a given output compared to the provided ground truth on a scale from 1 to 5. Use detailed reasoning to thoroughly analyze all claims before determining the final score.\n\n# Scoring Criteria\n\n- 5: Highly similar - The output and ground truth are nearly identical, with only minor, insignificant differences.\n- 4: Somewhat similar - The output is largely similar to the ground truth but has few noticeable differences.\n- 3: Moderately similar - There are some evident differences, but the core essence is captured in the output.\n- 2: Slightly similar - The output only captures a few elements of the ground truth and contains several differences.\n- 1: Not similar - The output is significantly different from the ground truth, with few or no matching elements.\n- 0: Not similar at all – The outpus is completely different from the ground truth or not provided. Like nothings is matching.\n\nEvery correct Citation (ideally exact) inside of the Output that matches the provided ground truth is a strong boost for a good score. Also important: A Citation DOES NOT require to be in square brackets. Correct Text is perfectly fine.\n\n# Evaluation Steps\n\n1. Identify and list the key elements present in both the output and the ground truth.\n2. Compare these key elements to evaluate their similarities and differences, considering both content and structure.\n3. Analyze the semantic meaning conveyed by both the output and the ground truth, noting any significant deviations.\n4. Consider factual accuracy of specific details, including names, dates, numbers, and relationships.\n5. Assess whether the output maintains the factual integrity of the ground truth, even if phrased differently.\n6. Determine the overall level of similarity and accuracy according to the defined criteria.\n7. Check if the Citation of Source is provided and matches the original source of the ground truth.\n\n# Output Format\n\nProvide:\n- A detailed analysis of the comparison (extended reasoning)\n- A one-sentence summary highlighting key differences (not similarities)\n- The final similarity score as an integer (0, 1, 2, 3, 4, or 5)\n\nAlways follow the JSON format below and return nothing else:\n{\n  \"extended_reasoning\": \"<detailed step-by-step analysis of factual accuracy and similarity>\",\n  \"reasoning_summary\": \"<one sentence summary focusing on key differences>\",\n  \"score\": <number: integer from 1 to 5>,\n  \"expected_citation\": \"<exact correct citation of the source like in expected answer>\",\n}\n\n# Examples\n\n**Example 1:**\n\nInput:\n- Output: \"The cat sat on the mat.\"\n- Ground Truth: \"The feline is sitting on the rug.\"\n\nExpected Output:\n{\n  \"extended_reasoning\": \"I need to compare 'The cat sat on the mat' with 'The feline is sitting on the rug.' First, let me identify the key elements: both describe an animal ('cat' vs 'feline') in a position ('sat' vs 'sitting') on a surface ('mat' vs 'rug'). The subject is semantically identical - 'cat' and 'feline' refer to the same animal. The action is also semantically equivalent - 'sat' and 'sitting' both describe the same position, though one is past tense and one is present continuous. The location differs in specific wording ('mat' vs 'rug') but both refer to floor coverings that serve the same function. The basic structure and meaning of both sentences are preserved, though they use different vocabulary and slightly different tense. The core information being conveyed is the same, but there are noticeable wording differences.\",\n  \"reasoning_summary\": \"The sentences differ in vocabulary choice ('cat' vs 'feline', 'mat' vs 'rug') and verb tense ('sat' vs 'is sitting').\",\n  \"score\": 3\n}\n\n**Example 2:**\n\nInput:\n- Output: \"The quick brown fox jumps over the lazy dog.\"\n- Ground Truth: \"A fast brown animal leaps over a sleeping canine.\"\n\nExpected Output:\n{\n  \"extended_reasoning\": \"I need to compare 'The quick brown fox jumps over the lazy dog' with 'A fast brown animal leaps over a sleeping canine.' Starting with the subjects: 'quick brown fox' vs 'fast brown animal'. Both describe the same entity (a fox is a type of animal) with the same attributes (quick/fast and brown). The action is described as 'jumps' vs 'leaps', which are synonymous verbs describing the same motion. The object in both sentences is a dog, described as 'lazy' in one and 'sleeping' in the other, which are related concepts (a sleeping dog could be perceived as lazy). The structure follows the same pattern: subject + action + over + object. The sentences convey the same scene with slightly different word choices that maintain the core meaning. The level of specificity differs slightly ('fox' vs 'animal', 'dog' vs 'canine'), but the underlying information and imagery remain very similar.\",\n  \"reasoning_summary\": \"The sentences use different but synonymous terminology ('quick' vs 'fast', 'jumps' vs 'leaps', 'lazy' vs 'sleeping') and varying levels of specificity ('fox' vs 'animal', 'dog' vs 'canine').\",\n  \"score\": 4\n}\n\n# Notes\n\n- Focus primarily on factual accuracy and semantic similarity, not writing style or phrasing differences.\n- Identify specific differences rather than making general assessments.\n- Pay special attention to dates, numbers, names, locations, and causal relationships when present.\n- Consider the significance of each difference in the context of the overall information.\n- Be consistent in your scoring approach across different evaluations.\n- Value the Citation if correct. False Citation is a negative factor. A missing Citation is strong negative factor.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        1152
+      ],
+      "id": "a0271dc4-2de2-40cb-a0d6-6b10af71a5f5",
+      "name": "Run Evaluation"
+    },
+    {
+      "parameters": {
+        "content": "## Hook up your own GSheet for saving Outputs"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1216,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "c958408f-446a-4236-b90c-ae95d523f325",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {
+          "responseFormat": "json_object",
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        1360
+      ],
+      "id": "18f94fd7-60fb-4da2-a3bd-9ea338e3ae07",
+      "name": "LLM as a Judge"
+    },
+    {
+      "parameters": {
+        "content": "## Do not touch this!\n\n![I see you](https://cloud.let-the-work-flow.com/workflow-data/eval-emoji-72.png)\nSincerely,\n_Pure Eval_",
+        "height": 224,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        1392
+      ],
+      "typeVersion": 1,
+      "id": "4a119251-965f-4037-bd05-866c3695a1c1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You will receive a user question as input:\n{{ $json.chatInput }}\n\nYour task is to answer strictly using the database you have as a tool.  \nYou must:\n- Provide a **Yes** or **No** as the main outcome.\n- Provide a clear and concise explanation in English, citing the exact policy or document where the information is found.\n- If there is insufficient data in the database, respond with \"No—There is not enough information in the database to provide a reliable answer.\"\n\nThe final output must follow this JSON schema exactly:\n\n{\n  \"answer\": \"Yes\" | \"No\",\n  \"explanation\": \"Concise reasoning in English based strictly on the database information\",\n  \"citation\": \"Document name or identifier where the supporting information was found\"\n}\n\nExample:\n\nUser question: \"A nonprofit educational organization submits a Zone A permit application on March 5th for a workshop scheduled on March 9th. The workshop will have 75 participants and involves no sensitive data processing. Is this application eligible for Zone A?\"\n\nExpected JSON response:\n\n{\n  \"answer\": \"Yes\",\n  \"explanation\": \"Zone A requires submission ≥3 days before activation (March 5th to March 9th = 4 days), allows up to 100 participants, and the nonprofit status and non-sensitive data comply with Zone A restrictions.\",\n  \"citation\": \"MoF Policy 001: Permit Eligibility by Zone\"\n}\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -544,
+        1296
+      ],
+      "id": "d0e2aa5d-0c77-4e7c-ac0b-0a21890fa2be",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -688,
+        1504
+      ],
+      "id": "c589b919-0717-4171-9377-d2e9677bf92f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "vcj1XOfpBq5w1GA6",
+          "name": "Open AI Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        1760
+      ],
+      "id": "0731a1d0-01f8-4378-a97b-a32d669d19ec",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "vcj1XOfpBq5w1GA6",
+          "name": "Open AI Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"answer\": \"Yes—answer,[citation]\"\n  \n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        1744
+      ],
+      "id": "2295b248-c568-4506-a5c4-bacf4858df02",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "=Answer the question  {{ $json.chatInput }} ",
+        "tableName": "texto",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        -512,
+        1536
+      ],
+      "id": "6391283c-4179-4d70-a6c9-802e74c59f77",
+      "name": "Postgres PGVector Store1",
+      "credentials": {
+        "postgres": {
+          "id": "l3FYAm9A25EGK5Ti",
+          "name": "n8n_pdf"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "metadata_page_number": "={{ $json.metadata.page_number }}",
+            "element_id": "={{ $json.element_id }}",
+            "document": "={{ $json.Document }}",
+            "type": "={{ $json.Type }}",
+            "metadata_parent_id": "={{ $json.metadata.parent_id }}"
+          },
+          "matchingColumns": [
+            "element_id"
+          ],
+          "schema": [
+            {
+              "id": "element_id",
+              "displayName": "element_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "document",
+              "displayName": "document",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "metadata_page_number",
+              "displayName": "metadata_page_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "metadata_parent_id",
+              "displayName": "metadata_parent_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        688,
+        448
+      ],
+      "id": "8f96f078-fbd4-4304-8916-e301a8da2a32",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "l3FYAm9A25EGK5Ti",
+          "name": "n8n_pdf"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Search for new files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search for new files": {
+      "main": [
+        [
+          {
+            "node": "Download files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download files": {
+      "main": [
+        [
+          {
+            "node": "Call unstructured",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call unstructured": {
+      "main": [
+        [
+          {
+            "node": "Only title",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only title": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only if we are evaluating": {
+      "main": [
+        [
+          {
+            "node": "Run Evaluation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eval Input": {
+      "main": [
+        [
+          {
+            "node": "Filter Empty Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eval Set": {
+      "main": [
+        [
+          {
+            "node": "Eval Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Empty Rows": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Evaluation": {
+      "main": [
+        [
+          {
+            "node": "Save Eval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM as a Judge": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Run Evaluation",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Only if we are evaluating",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert or update rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2f116850a4f704483a75d9e08bf6943b4894118c50035d6378c2c42288efcc18"
+  }
+}
