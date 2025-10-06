@@ -1,0 +1,1792 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {
+          "headerRow": true,
+          "sheetName": "Catalogue"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        448,
+        1712
+      ],
+      "id": "d64ac00f-e415-415d-96e9-dffbac368ee0",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8924a5d3-985e-4dce-9eca-e88b041a4036",
+              "name": "id",
+              "value": "={{ $json.categoryId }}",
+              "type": "number"
+            },
+            {
+              "id": "2f2c79b5-d673-480f-b33d-1ee37fbd9d76",
+              "name": "Name",
+              "value": "={{ $json.categoryName }}",
+              "type": "string"
+            },
+            {
+              "id": "d89d8972-c135-4293-a984-3ce55594be4b",
+              "name": "parentCategoryId",
+              "value": "={{ $json.parentCategoryId }}",
+              "type": "string"
+            },
+            {
+              "id": "42b47bf0-b017-449c-9975-a180421507af",
+              "name": "catgroupid",
+              "value": "={{ $json.catgroupid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        448
+      ],
+      "id": "8d756aed-fd1c-4b94-9096-e3e5687279ca",
+      "name": "Edit Fields3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "https://apiv2.infortisa.com/api/Ficha/Get?user=3A99A84C-0E10-476E-B375-A88CC2331080",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bfa22893-aa9d-4be9-a57d-260c2a10187a",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "url": "https://apiv2.infortisa.com/api/Ficha/GetFichaComercialTecnica?user=3A99A84C-0E10-476E-B375-A88CC2331080",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "00959b36-c8a9-42f1-89e1-a6f9a3cf297d",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "url": "https://apiv2.infortisa.com/api/Tarifa/GetFileV5?user=3A99A84C-0E10-476E-B375-A88CC2331080",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        224
+      ],
+      "id": "5718118d-546e-40a6-bb1d-4671692ab238",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "content": "## Infortisa\n#### No va(verlo con Roberto)",
+        "height": 256,
+        "width": 736
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        128
+      ],
+      "typeVersion": 1,
+      "id": "2c2d1306-8295-4ab9-9cbb-8ffb5c468a99",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "descripciones",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        832
+      ],
+      "id": "3d83e0fc-6155-4abd-a995-09349b50db06",
+      "name": "Postgres PGVector Store1",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        1056
+      ],
+      "id": "2775568a-e10e-4b9f-8456-a77eede2fa89",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z28ByYmtMzpGbseD",
+          "name": "OpenAi Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json['Descripción_1'] }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "id",
+                "value": "={{ $json.productId }}"
+              },
+              {
+                "name": "name",
+                "value": "={{ $json.name }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        1056
+      ],
+      "id": "5fddccc7-ea2d-42e7-b620-ae5c3727b305",
+      "name": "Default Data Loader1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4de912b-7c9b-48ee-9b02-4c6cce5d9165",
+              "name": "productId",
+              "value": "={{ $json.productId }}",
+              "type": "string"
+            },
+            {
+              "id": "2fbce932-fb8f-4c63-90fe-897918df32a7",
+              "name": "ean",
+              "value": "={{ $json.ean }}",
+              "type": "string"
+            },
+            {
+              "id": "3fbea8ce-6eb8-4d4f-8910-69f6b9d9cf10",
+              "name": "=category",
+              "value": "={{ $json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "c92d354b-fe69-43a6-bac3-db8309f2e741",
+              "name": "categoryId",
+              "value": "={{ $json.categoryId }}",
+              "type": "string"
+            },
+            {
+              "id": "8437e30b-8dd3-4ca2-b3e6-b68b1e4d7787",
+              "name": "subCategory",
+              "value": "={{ $json.subCategory }}",
+              "type": "string"
+            },
+            {
+              "id": "779e5e32-ed2a-43da-b2a6-15828c020207",
+              "name": "subCategoryId",
+              "value": "={{ $json.subCategoryId }}",
+              "type": "string"
+            },
+            {
+              "id": "e2f7f006-2c10-4a3c-a4f4-a91ed2f64a3b",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "eb94ca25-a196-4b1c-9daa-7a6059895025",
+              "name": "stock",
+              "value": "={{ $json.stock }}",
+              "type": "number"
+            },
+            {
+              "id": "e08ad544-d0cb-438b-8a67-c09713263a1d",
+              "name": "url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "0307cfc3-7149-4f88-a82c-458ef1deb9a6",
+              "name": "Descripción_1",
+              "value": "={{ $json.marketingText[0].longDescription }}, {{ $json.marketingText[0].shortDescription }}, {{ $json.marketingText[0].longSummary }} y {{ $json.marketingText[0].shortSummary }}",
+              "type": "string"
+            },
+            {
+              "id": "816be4a2-baec-413b-b06c-6c6d2beefc4a",
+              "name": "proveedor",
+              "value": "DMI",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        800
+      ],
+      "id": "87145dcd-edcd-4e71-bedd-084490f45e96",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "https://b2b.senetic.com/Gateway/ClientApi/ProductCatalogueGet",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "UseItemCategoryFilter",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "MiAppCliente/1.0"
+            },
+            {
+              "name": "Authorization",
+              "value": "Basic NTcyNjFERTEtQjZEOS00NTdFLUE3NUQtNThGQ0E2Q0Y2MEJEOkNGN0UxNTU3LTMwMTEtNDhDRC1BNTFDLTU0Mjc2N0E5NjVFMA=="
+            },
+            {
+              "name": "Cookie",
+              "value": "__cf_bm=VsZze4_VrUZVNmR1GDa8qmhAEp1vO61VqML.FOERhbU-1759131528-1.0.1.1-VrrvAlP3dR_f97xvKKfeDNUKAbazD6puM30usFT.Og4T9cj6aufW7JMR85qzhsJx2Rh8zSmO0xrdUNPRdNKEjpUCPBa1.HbIqhkalgQI_.Y; _cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000; B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM"
+            },
+            {
+              "name": "cookie",
+              "value": "__cf_bm=VsZze4_VrUZVNmR1GDa8qmhAEp1vO61VqML.FOERhbU-1759131528-1.0.1.1-VrrvAlP3dR_f97xvKKfeDNUKAbazD6puM30usFT.Og4T9cj6aufW7JMR85qzhsJx2Rh8zSmO0xrdUNPRdNKEjpUCPBa1.HbIqhkalgQI_.Y;_cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000;B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM;"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        1184
+      ],
+      "id": "3c54b488-0613-4480-b64b-72523cd5c709",
+      "name": "Senetic"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.dmi.es/api/v2/users/authenticate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"username\": \"CT055092\",\n  \"password\": \"BEGO73\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        704
+      ],
+      "id": "4ef6ee38-037b-4e1d-8f4c-40c26e6ea815",
+      "name": "DMI"
+    },
+    {
+      "parameters": {
+        "url": "https://api.dmi.es/api/v2/products/getcategories",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        448
+      ],
+      "id": "88dbccde-e7a6-4185-8d5a-4a417b1d1f3b",
+      "name": "DMI_categorias"
+    },
+    {
+      "parameters": {
+        "url": "https://api.dmi.es/api/v2/products/GetAllProducts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        800
+      ],
+      "id": "de177716-2c77-464f-9979-f5e39db57ed1",
+      "name": "DMI_productos"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1376
+      ],
+      "id": "97332127-87df-492a-bcb7-0b247d036268",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4de912b-7c9b-48ee-9b02-4c6cce5d9165",
+              "name": "productId",
+              "value": "={{ $json.itemId }}",
+              "type": "string"
+            },
+            {
+              "id": "2fbce932-fb8f-4c63-90fe-897918df32a7",
+              "name": "ean",
+              "value": "={{ $json.ean }}",
+              "type": "string"
+            },
+            {
+              "id": "3fbea8ce-6eb8-4d4f-8910-69f6b9d9cf10",
+              "name": "=category",
+              "value": "={{ $json.productPrimaryCategory.categoryNodeName }}",
+              "type": "string"
+            },
+            {
+              "id": "c92d354b-fe69-43a6-bac3-db8309f2e741",
+              "name": "categoryId",
+              "value": "={{ $json.productPrimaryCategory.categoryNodeId }}",
+              "type": "string"
+            },
+            {
+              "id": "8437e30b-8dd3-4ca2-b3e6-b68b1e4d7787",
+              "name": "subCategory",
+              "value": "={{ $json.productSecondaryCategory.categoryNodeName }}",
+              "type": "string"
+            },
+            {
+              "id": "779e5e32-ed2a-43da-b2a6-15828c020207",
+              "name": "subCategoryId",
+              "value": "={{ $json.productSecondaryCategory.categoryNodeId }}",
+              "type": "string"
+            },
+            {
+              "id": "e2f7f006-2c10-4a3c-a4f4-a91ed2f64a3b",
+              "name": "name",
+              "value": "={{ $json.itemDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "eb94ca25-a196-4b1c-9daa-7a6059895025",
+              "name": "stock",
+              "value": "={{ $json.actualStock }}",
+              "type": "number"
+            },
+            {
+              "id": "e08ad544-d0cb-438b-8a67-c09713263a1d",
+              "name": "url",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "0307cfc3-7149-4f88-a82c-458ef1deb9a6",
+              "name": "Descripción_1",
+              "value": "={{ $json.longItemDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "58d780e4-9a71-4b74-890f-8858188624af",
+              "name": "precio",
+              "value": "={{ $json.unitNetPrice }}",
+              "type": "string"
+            },
+            {
+              "id": "3bfd25a8-085a-4374-8a8e-d16073a7422b",
+              "name": "proveedor",
+              "value": "Senetic",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        1280
+      ],
+      "id": "06e9bbc0-da93-413e-a462-3f0b812abb95",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "url": "https://b2b.senetic.com/Gateway/ClientApi/InventoryReportGet",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "UseItemCategoryFilter",
+              "value": "true"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Basic NTcyNjFERTEtQjZEOS00NTdFLUE3NUQtNThGQ0E2Q0Y2MEJEOkNGN0UxNTU3LTMwMTEtNDhDRC1BNTFDLTU0Mjc2N0E5NjVFMA=="
+            },
+            {
+              "name": "Cookie",
+              "value": "_cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000; B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM"
+            },
+            {
+              "name": "cookie",
+              "value": "_cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000;B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM;"
+            },
+            {
+              "name": "cookie",
+              "value": "__cf_bm=VsZze4_VrUZVNmR1GDa8qmhAEp1vO61VqML.FOERhbU-1759131528-1.0.1.1-VrrvAlP3dR_f97xvKKfeDNUKAbazD6puM30usFT.Og4T9cj6aufW7JMR85qzhsJx2Rh8zSmO0xrdUNPRdNKEjpUCPBa1.HbIqhkalgQI_.Y;_cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000;B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM;"
+            },
+            {
+              "name": "User-Agent",
+              "value": "MiAppCliente/1.0"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        1376
+      ],
+      "id": "31215ccd-11fd-45a9-95df-2cc298b6368d",
+      "name": "Senetic_inventario"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "categorias",
+          "mode": "list",
+          "cachedResultName": "categorias"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "name": "={{ $json.Name }}",
+            "parentcategoryid": "={{ $json.parentCategoryId }}",
+            "catgroupid": "={{ $json.catgroupid }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "parentcategoryid",
+              "displayName": "parentcategoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "catgroupid",
+              "displayName": "catgroupid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        960,
+        448
+      ],
+      "id": "eef6f8c2-8d04-4be0-96e7-c0ab69ec8594",
+      "name": "categorías",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "productos",
+          "mode": "list",
+          "cachedResultName": "productos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "productid": "={{ $json.productId }}",
+            "ean": "={{ $json.ean }}",
+            "name": "={{ $json.name }}",
+            "stock": "={{ $json.stock }}",
+            "url": "={{ $json.url }}",
+            "categoryid": "={{ $json.categoryId }}",
+            "subcategory": "={{ $json.subCategory }}",
+            "category": "={{ $json.category }}",
+            "subcategoryid": "={{ $json.subCategoryId }}",
+            "proveedor": "={{ $json.proveedor }}"
+          },
+          "matchingColumns": [
+            "productid"
+          ],
+          "schema": [
+            {
+              "id": "productid",
+              "displayName": "productid",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ean",
+              "displayName": "ean",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "stock",
+              "displayName": "stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "categoryid",
+              "displayName": "categoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "subcategoryid",
+              "displayName": "subcategoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "subcategory",
+              "displayName": "subcategory",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tsv",
+              "displayName": "tsv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "proveedor",
+              "displayName": "proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        960,
+        640
+      ],
+      "id": "0fbbe76a-37c7-4606-9e54-0754456f0cfc",
+      "name": "productos",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "productos",
+          "mode": "list",
+          "cachedResultName": "productos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "productid": "={{ $json.productId }}",
+            "ean": "={{ $json.ean }}",
+            "name": "={{ $json.name }}",
+            "stock": "={{ $json.stock }}",
+            "url": "={{ $json.url }}",
+            "categoryid": "={{ $json.categoryId }}",
+            "subcategory": "={{ $json.subCategory }}",
+            "category": "={{ $json.category }}",
+            "subcategoryid": "={{ $json.subCategoryId }}",
+            "proveedor": "={{ $json.proveedor }}",
+            "pvp": "={{ $json.precio }}"
+          },
+          "matchingColumns": [
+            "productid"
+          ],
+          "schema": [
+            {
+              "id": "productid",
+              "displayName": "productid",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ean",
+              "displayName": "ean",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "stock",
+              "displayName": "stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "categoryid",
+              "displayName": "categoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "subcategoryid",
+              "displayName": "subcategoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "subcategory",
+              "displayName": "subcategory",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tsv",
+              "displayName": "tsv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "proveedor",
+              "displayName": "proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "pvp",
+              "displayName": "pvp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1312,
+        1424
+      ],
+      "id": "0bb97d37-33db-4d25-b017-12cf1071e0a6",
+      "name": "productos1",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "descripciones",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        1024
+      ],
+      "id": "d1aa1a30-b0a3-48ac-a155-021dd21a1a3b",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json['Descripción_1'] }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "id",
+                "value": "={{ $json.productId }}"
+              },
+              {
+                "name": "name",
+                "value": "={{ $json.name }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1392,
+        1248
+      ],
+      "id": "e5162044-17c4-4f27-bb39-4e7392e530ed",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "productos",
+          "mode": "list",
+          "cachedResultName": "productos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "productid": "={{ $json.productId }}",
+            "ean": "={{ $json.ean }}",
+            "name": "={{ $json.name }}",
+            "stock": "={{ $json.stock }}",
+            "url": "={{ $json.url }}",
+            "categoryid": "={{ $json.categoryId }}",
+            "subcategory": "={{ $json.subCategory }}",
+            "category": "={{ $json.category }}",
+            "subcategoryid": "={{ $json.subCategoryId }}"
+          },
+          "matchingColumns": [
+            "productid"
+          ],
+          "schema": [
+            {
+              "id": "productid",
+              "displayName": "productid",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ean",
+              "displayName": "ean",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "stock",
+              "displayName": "stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoryid",
+              "displayName": "categoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subcategoryid",
+              "displayName": "subcategoryid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subcategory",
+              "displayName": "subcategory",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        960,
+        1568
+      ],
+      "id": "78b8bdbf-f118-4d10-9b5a-63f61dcf609e",
+      "name": "productos2",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b4de912b-7c9b-48ee-9b02-4c6cce5d9165",
+              "name": "productId",
+              "value": "={{ $json.SKU }}",
+              "type": "string"
+            },
+            {
+              "id": "2fbce932-fb8f-4c63-90fe-897918df32a7",
+              "name": "ean",
+              "value": "={{ $json.EAN }}",
+              "type": "string"
+            },
+            {
+              "id": "3fbea8ce-6eb8-4d4f-8910-69f6b9d9cf10",
+              "name": "=category",
+              "value": "={{ $json.CategoryDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "c92d354b-fe69-43a6-bac3-db8309f2e741",
+              "name": "categoryId",
+              "value": "={{ $json.CategoryCode }}",
+              "type": "string"
+            },
+            {
+              "id": "8437e30b-8dd3-4ca2-b3e6-b68b1e4d7787",
+              "name": "subCategory",
+              "value": "={{ $json.CategoryDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "779e5e32-ed2a-43da-b2a6-15828c020207",
+              "name": "subCategoryId",
+              "value": "={{ $json.FamilyCode }}",
+              "type": "string"
+            },
+            {
+              "id": "e2f7f006-2c10-4a3c-a4f4-a91ed2f64a3b",
+              "name": "name",
+              "value": "={{ $json.Description }}",
+              "type": "string"
+            },
+            {
+              "id": "eb94ca25-a196-4b1c-9daa-7a6059895025",
+              "name": "stock",
+              "value": "={{ $json.StockQty }}",
+              "type": "number"
+            },
+            {
+              "id": "e08ad544-d0cb-438b-8a67-c09713263a1d",
+              "name": "url",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "0307cfc3-7149-4f88-a82c-458ef1deb9a6",
+              "name": "Descripción_1",
+              "value": "={{ $json.ExtendedDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "58d780e4-9a71-4b74-890f-8858188624af",
+              "name": "precio",
+              "value": "={{ $json.ListPrice }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        1712
+      ],
+      "id": "fff32c56-9bc3-4e06-8085-4403e6aae8be",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "descripciones",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        1872
+      ],
+      "id": "25fa590b-a322-415d-9c1a-1bf4e3c0dd99",
+      "name": "Postgres PGVector Store2",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        2096
+      ],
+      "id": "d5798cc5-fca3-4977-bed1-3361c2f8e360",
+      "name": "Embeddings OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z28ByYmtMzpGbseD",
+          "name": "OpenAi Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json['Descripción_1'] }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "id",
+                "value": "={{ $json.productId }}"
+              },
+              {
+                "name": "name",
+                "value": "={{ $json.name }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        2096
+      ],
+      "id": "d3bb30b0-2e1c-4dcd-b91e-0388eee12555",
+      "name": "Default Data Loader2"
+    },
+    {
+      "parameters": {
+        "path": "upload/Catalogue.xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        224,
+        1712
+      ],
+      "id": "c598c8f8-c5ee-452c-bcf9-d6275a669227",
+      "name": "FTP Espirinet"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ingrammicro.com/oauth/oauth30/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Flow",
+              "value": "clientCredentials"
+            },
+            {
+              "name": "Cookie",
+              "value": "NSC_JOxywurcbmfajcten1ou03dpu1dfub3=4bb3a3d833166e7151259aab753848c5c64bde89f0166b9e771f101fb672b8e17c8cacc4"
+            },
+            {
+              "name": "cookie",
+              "value": "NSC_JOxywurcbmfajcten1ou03dpu1dfub3=4bb3a3d833166e7151259aab753848c5c64bde89f0166b9e771f101fb672b8e17c8cacc4;"
+            },
+            {
+              "name": "Cookie",
+              "value": "__cf_bm=VsZze4_VrUZVNmR1GDa8qmhAEp1vO61VqML.FOERhbU-1759131528-1.0.1.1-VrrvAlP3dR_f97xvKKfeDNUKAbazD6puM30usFT.Og4T9cj6aufW7JMR85qzhsJx2Rh8zSmO0xrdUNPRdNKEjpUCPBa1.HbIqhkalgQI_.Y; _cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000; B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM"
+            },
+            {
+              "name": "cookie",
+              "value": "__cf_bm=VsZze4_VrUZVNmR1GDa8qmhAEp1vO61VqML.FOERhbU-1759131528-1.0.1.1-VrrvAlP3dR_f97xvKKfeDNUKAbazD6puM30usFT.Og4T9cj6aufW7JMR85qzhsJx2Rh8zSmO0xrdUNPRdNKEjpUCPBa1.HbIqhkalgQI_.Y;_cfuvid=SOtEEWpgii3P6QaXUEPGONxX402sojRYIWCrgepmzwg-1759131528275-0.0.1.1-604800000;B2BCore.sen.B2BExr.Session=CfDJ8DyyJIXHXAhHpzu6myC9zQn2i2cHkDVNG1G9t2fWvtiwgVKeDPOPSOVZbMi7MMS7JBpK7eACHkOCD79lkixI%2BYK37t%2F58Tt8m%2Fkz1NpoFu4evpUqsaxZ2szh9GeSy3DjVjwS0ztv2o7WShSdxkBC4eKe0wZvqLfenpQgtX1%2FwNLM;"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "grant_type",
+              "value": "client_credentials"
+            },
+            {
+              "name": "client_id",
+              "value": "vcAoTuQGgPI8dCpr9oSoWnZyGmUKGTFv"
+            },
+            {
+              "name": "client_secret",
+              "value": "5efwNmQ6tpJEF6A8"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        1904
+      ],
+      "id": "0a06f787-578b-4cc8-afb5-1d33924f8046",
+      "name": "Ingram credenciales"
+    },
+    {
+      "parameters": {
+        "url": "https://api.ingrammicro.com/sandbox/resellers/v6/catalog/details/6YE881",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "IM-CustomerNumber",
+              "value": "29-007075"
+            },
+            {
+              "name": "IM-CountryCode",
+              "value": "ES"
+            },
+            {
+              "name": "IM-SenderID",
+              "value": "Punt"
+            },
+            {
+              "name": "IM-CorrelationID",
+              "value": "fbac82ba-cf0a-4bcf-fc03-0c5084"
+            },
+            {
+              "name": "Authorization",
+              "value": "={{ $json.token_type }} {{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1904
+      ],
+      "id": "5ab424a0-07b7-412b-873e-727e76f06ce9",
+      "name": "Ingram credenciales1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "lines",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        448,
+        1184
+      ],
+      "id": "5421d3f6-c9bc-405b-97d9-81ec76140162",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "lines",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        448,
+        1376
+      ],
+      "id": "f3ed839f-3e77-4015-b714-03c84ab1ba09",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "=itemId",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        672,
+        1280
+      ],
+      "id": "68b85e28-f799-4811-92d0-b34d24fe5e97",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        1248
+      ],
+      "id": "dee71eea-0fa4-4bbf-9569-666b85b08ef7",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z28ByYmtMzpGbseD",
+          "name": "OpenAi Punt"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "categorías",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "productos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres PGVector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Senetic": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DMI": {
+      "main": [
+        [
+          {
+            "node": "DMI_productos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DMI_categorias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DMI_categorias": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DMI_productos": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "DMI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Senetic",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FTP Espirinet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Ingram credenciales",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Senetic_inventario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "productos1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres PGVector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Senetic_inventario": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "productos1": {
+      "main": [
+        []
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "productos2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres PGVector Store2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader2": {
+      "ai_document": [
+        [
+          {
+            "node": "Postgres PGVector Store2",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FTP Espirinet": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingram credenciales": {
+      "main": [
+        [
+          {
+            "node": "Ingram credenciales1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Postgres PGVector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "6c20ee2e5855197d5f6977c07b0003ed8d5f0bcf39cc89e23d8ee306f60b88a5"
+  }
+}

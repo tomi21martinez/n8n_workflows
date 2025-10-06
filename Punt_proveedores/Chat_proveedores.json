@@ -1,0 +1,585 @@
+
+{
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "¿Qué producto necesitas?",
+        "options": {
+          "subtitle": "",
+          "title": "¡Buenos días!",
+          "customCss": "/* n8n Chat • Pro Theme v3\n   Clean, modern, accessible. New palette, typography and surfaces.\n*/\n\n:root {\n  /* ===== Brand palette (updated) ===== */\n  --chat--color-primary: #4F46E5;         /* Indigo 600 */\n  --chat--color-primary-700: #4338CA;     /* Indigo 700 */\n  --chat--color-primary-500: #6366F1;     /* Indigo 500 */\n  --chat--color-secondary: #14B8A6;       /* Teal 500 */\n  --chat--color-secondary-600: #0D9488;   /* Teal 600 */\n\n  /* Greys & Surfaces */\n  --chat--color-white: #FFFFFF;\n  --chat--color-bg: #F7F8FA;              /* App background */\n  --chat--color-surface: #FFFFFF;         /* Cards / Bubbles */\n  --chat--color-surface-2: #F3F4F6;       /* Subtle surface */\n  --chat--color-border: #E5E7EB;          /* Divider */\n  --chat--color-text: #0F172A;            /* Slate 900 */\n  --chat--color-text-muted: #475569;      /* Slate 600 */\n  --chat--color-disabled: #94A3B8;        /* Slate 400 */\n  --chat--color-typing: #64748B;          /* Slate 500 */\n\n  /* Spacing & Radius */\n  --chat--spacing: 1rem;\n  --chat--radius-sm: 10px;\n  --chat--radius-md: 14px;\n  --chat--radius-lg: 18px;\n\n  /* Motion */\n  --chat--transition-duration: .18s;\n  --chat--elev-1: 0 6px 16px rgba(2, 6, 23, 0.07);\n  --chat--elev-2: 0 12px 28px rgba(2, 6, 23, 0.12);\n  --chat--ring: 0 0 0 3px color-mix(in srgb, var(--chat--color-primary) 30%, transparent);\n\n  /* Typography */\n  --chat--font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, \"Helvetica Neue\", Arial, \"Noto Sans\", \"Apple Color Emoji\", \"Segoe UI Emoji\";\n  --chat--heading--font-size: clamp(1.05rem, 2.2vw, 1.25rem);\n  --chat--subtitle--font-size: .92rem;\n  --chat--message--font-size: 0.98rem;\n  --chat--message-line-height: 1.55;\n\n  /* Window */\n  --chat--window--width: 440px;\n  --chat--window--height: 640px;\n  --chat--window--right: var(--chat--spacing);\n  --chat--window--bottom: var(--chat--spacing);\n}\n\n/* ===== Window Shell ===== */\n.chat-window {\n  position: fixed;\n  inset: auto var(--chat--window--right) var(--chat--window--bottom) auto;\n  width: var(--chat--window--width);\n  height: var(--chat--window--height);\n  display: grid; grid-template-rows: auto 1fr auto;\n  background: var(--chat--color-bg);\n  border: 1px solid var(--chat--color-border);\n  border-radius: var(--chat--radius-lg);\n  box-shadow: var(--chat--elev-2);\n  overflow: hidden;\n  font-family: var(--chat--font-family);\n  color: var(--chat--color-text);\n}\n\n/* ===== Header ===== */\n.chat-header {\n  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .75rem;\n  padding: .9rem 1rem;\n  background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-primary-700) 100%);\n  color: #F8FAFC;\n  border-bottom: 1px solid rgba(255,255,255,.08);\n}\n.chat-title { font-weight: 800; letter-spacing:.2px; font-size: var(--chat--heading--font-size); }\n.chat-subtitle { font-size: var(--chat--subtitle--font-size); opacity: .9; }\n.chat-actions { display: inline-flex; gap: .5rem; align-items: center; }\n.chat-iconbtn {\n  --_size: 36px;\n  width: var(--_size); height: var(--_size);\n  display: grid; place-items: center;\n  border-radius: var(--chat--radius-sm);\n  border: 1px solid rgba(255,255,255,.14);\n  background: rgba(255,255,255,.08);\n  color: #fff; cursor: pointer;\n  transition: transform var(--chat--transition-duration), background var(--chat--transition-duration);\n}\n.chat-iconbtn:hover { transform: translateY(-1px); background: rgba(255,255,255,.16); }\n\n/* ===== Messages Area ===== */\n.chat-messages {\n  padding: 16px;\n  overflow: auto;\n  background:\n    radial-gradient(60% 45% at 100% 0%, color-mix(in srgb, var(--chat--color-primary) 6%, transparent) 0%, transparent 70%),\n    radial-gradient(65% 50% at 0% 100%, color-mix(in srgb, var(--chat--color-secondary) 6%, transparent) 0%, transparent 70%),\n    var(--chat--color-bg);\n}\n.chat-messages::-webkit-scrollbar { width: 10px; }\n.chat-messages::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 999px; }\n.chat-messages::-webkit-scrollbar-track { background: #EEF2F7; }\n\n/* ===== Message bubble ===== */\n.chat-message {\n  max-width: min(620px, 82%);\n  margin: 0 auto .65rem;\n  line-height: var(--chat--message-line-height);\n  font-size: var(--chat--message--font-size);\n  border-radius: var(--chat--radius-md);\n  padding: .9rem 1rem;\n  box-shadow: var(--chat--elev-1);\n  border: 1px solid var(--chat--color-border);\n  background: var(--chat--color-surface);\n  position: relative;\n}\n\n.chat-message.bot { margin-right: auto; }\n.chat-message.user {\n  margin-left: auto;\n  background: linear-gradient(180deg, var(--chat--color-primary-500), var(--chat--color-primary));\n  color: #FFFFFF;\n  border-color: color-mix(in srgb, var(--chat--color-primary) 25%, var(--chat--color-border));\n}\n\n/* Optional tails for a chat feel */\n.chat-message.user::after, .chat-message.bot::after {\n  content: \"\"; position: absolute; bottom: 2px; width: 10px; height: 10px; background: inherit; transform: rotate(45deg);\n}\n.chat-message.user::after { right: 8px; }\n.chat-message.bot::after { left: 8px; }\n\n/* Grouping (tighten same-author bubbles) */\n.chat-message + .chat-message.user { margin-top: -2px; }\n.chat-message + .chat-message.bot { margin-top: -2px; }\n\n/* Meta */\n.chat-meta { margin-top: 6px; font-size: .75rem; color: var(--chat--color-text-muted); }\n\n/* Code blocks */\n.chat-message pre { background: var(--chat--color-surface-2); padding: .9rem; border-radius: 12px; overflow:auto; font-size: .92rem; }\n\n/* Badges */\n.badge { display:inline-block; padding:.25rem .55rem; border-radius: 999px; font-size:.75rem; background: color-mix(in srgb, var(--chat--color-primary) 16%, var(--chat--color-surface)); color: var(--chat--color-text); }\n\n/* Typing indicator */\n.chat-typing { display: inline-flex; gap: 4px; align-items: center; background: var(--chat--color-surface); border: 1px solid var(--chat--color-border); border-radius: 999px; padding: 6px 10px; box-shadow: var(--chat--elev-1); }\n.chat-typing .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--chat--color-typing); opacity: .45; animation: blink 1.15s infinite; }\n.chat-typing .dot:nth-child(2){ animation-delay: .15s }\n.chat-typing .dot:nth-child(3){ animation-delay: .3s }\n@keyframes blink { 0%, 80%, 100% { opacity:.45 } 40% { opacity:1 } }\n\n/* ===== Input Area ===== */\n.chat-input {\n  display: grid; grid-template-columns: auto 1fr auto; gap: 10px;\n  padding: 12px; background: var(--chat--color-surface);\n  border-top: 1px solid var(--chat--color-border);\n}\n.chat-input .left-tools { width: 2rem; display: grid; place-items: center; }\n\n.chat-textarea {\n  min-height: 50px; max-height: 30rem;\n  font: inherit; line-height: 1.5; padding: .85rem 1rem;\n  background: #FFFFFF; color: var(--chat--color-text);\n  border: 1px solid var(--chat--color-border);\n  border-radius: 999px; outline: none; resize: vertical;\n  transition: box-shadow var(--chat--transition-duration), border-color var(--chat--transition-duration), background var(--chat--transition-duration);\n}\n.chat-textarea:hover { background: #FCFCFF; }\n.chat-textarea:focus { box-shadow: var(--chat--ring); border-color: var(--chat--color-primary); }\n\n.chat-send, .chat-attach {\n  --_size: 40px; width: var(--_size); height: var(--_size);\n  display: grid; place-items: center; border: 0; cursor: pointer;\n  background: var(--chat--color-surface); color: #9CA3AF;\n  border-radius: var(--chat--radius-sm); box-shadow: var(--chat--elev-1);\n  transition: transform var(--chat--transition-duration), background var(--chat--transition-duration), color var(--chat--transition-duration);\n}\n.chat-send:hover { background: var(--chat--color-primary); color: #fff; transform: translateY(-1px); }\n.chat-attach:hover { background: var(--chat--color-secondary); color: #fff; transform: translateY(-1px); }\n\n/* ===== Floating Toggle (optional) ===== */\n.chat-toggle {\n  position: fixed; right: var(--chat--window--right); bottom: calc(var(--chat--window--bottom) + 4px);\n  width: 64px; height: 64px; border-radius: 50%; border: none; color: #fff; cursor: pointer;\n  background: linear-gradient(135deg, var(--chat--color-primary), var(--chat--color-secondary));\n  box-shadow: 0 14px 32px rgba(79,70,229,.35);\n  transition: transform var(--chat--transition-duration), box-shadow var(--chat--transition-duration);\n}\n.chat-toggle:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(79,70,229,.45); }\n\n/* ===== Dark Theme ===== */\n.theme-dark {\n  --chat--color-bg: #0B1220;\n  --chat--color-surface: #0F172A;\n  --chat--color-surface-2: #111A2E;\n  --chat--color-border: #1E293B;\n  --chat--color-text: #E5E7EB;\n  --chat--color-text-muted: #94A3B8;\n  --chat--color-typing: #9CA3AF;\n}\n.theme-dark .chat-header { background: linear-gradient(135deg, #3632d5, #2a7c74); border-bottom-color: rgba(255,255,255,.06); }\n.theme-dark .chat-messages { background: linear-gradient(180deg, #0B1220 0%, #0D1426 100%); }\n.theme-dark .chat-send, .theme-dark .chat-attach { background: #0F172A; color: #94A3B8; }\n.theme-dark .chat-textarea { background: #0C1222; border-color: #1E293B; color: #E5E7EB; }\n.theme-dark .chat-textarea:focus { box-shadow: var(--chat--ring); border-color: var(--chat--color-primary); }\n.theme-dark .chat-message.user { background: linear-gradient(180deg, #5a60f2, #4F46E5); border-color: #3b3fe0; }\n\n/* Auto dark if user prefers (unless you force .theme-light) */\n@media (prefers-color-scheme: dark) {\n  :root:not(.theme-light) { color-scheme: dark; }\n}\n\n/* Reduced motion */\n@media (prefers-reduced-motion: reduce) {\n  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }\n}\n\n/* Small screens */\n@media (max-width: 520px) {\n  .chat-window { width: min(100vw - 16px, 460px); height: min(86vh, 760px); right: 8px; left: 8px; }\n  .chat-message { max-width: 92%; }\n}\n\n/* Utilities */\n.visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }\n.chat-skeleton { min-height: 44px; border-radius: var(--chat--radius-md); background: linear-gradient(90deg, rgba(2,6,23,.06), rgba(2,6,23,.10), rgba(2,6,23,.06)); background-size: 200% 100%; animation: shimmer 1.2s infinite; border: 1px solid var(--chat--color-border); box-shadow: var(--chat--elev-1); }\n@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1024,
+        -144
+      ],
+      "id": "0783b6a2-2da1-4302-b238-69ec3f4ccacf",
+      "name": "When chat message received",
+      "webhookId": "6a0ae20e-053c-4445-ba50-4b51f1b0c62c"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -800,
+        -16
+      ],
+      "id": "125463ac-8e93-4ef9-b9a7-70d69f14496d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z28ByYmtMzpGbseD",
+          "name": "OpenAi Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"mode\": \"ID|FTS|CARACTERISTICAS\",\n  \"normalized_query\": \"string\",\n  \"structured_specs\": {},\n  \"confidence\": 0.0\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -672,
+        -16
+      ],
+      "id": "c160cb9f-a935-4d91-a7e8-3cab1b161f09",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=mensaje de usuario:\n{{$json.chatInput}}\nEres un router de consultas para un catálogo. Clasifica la consulta en un único modo y devuelve solo un objeto JSON en una sola línea (sin backticks, sin texto extra):\n\nID: un único identificador (SKU/código/UUID) sin unidades ni descripciones.\n\nFTS: búsqueda por nombre/marca/modelo (puede tener typos).\n\nCARACTERISTICAS: especificaciones técnicas (pulgadas, Hz, resolución, curvo/plano, capacidad, color, etc.).\n\nReglas (orden):\n\nSi es un único token alfanumérico (≥6) o patrón SKU/UUID → ID.\n\nSi hay unidades/atributos (\", pulgadas, cm, mm, Hz, W, GB/TB, 4K/QHD, IPS/VA/OLED, curvo/plano, etc.) → CARACTERISTICAS.\n\nEn otro caso → FTS.\n\nEn duda → FTS.\n\nCampos obligatorios:\n{\"mode\":\"ID|FTS|CARACTERISTICAS\",\"normalized_query\":\"string\",\"structured_specs\":{},\"confidence\":0.0}\n\nnormalized_query: corrige typos/acentos mínimos (p. ej., “pantaya cabrio” → “pantalla Cavria”).\n\nstructured_specs: solo en CARACTERISTICAS, sino {}. Extrae pares simples (ej.: {\"inches\":34,\"curved\":false,\"hz\":144,\"panel\":\"ips\"}).\n\nconfidence: número entre 0 y 1.\n\nFormato de salida (obligatorio): responde únicamente con el JSON en una sola línea. Ejemplo: {\"mode\":\"FTS\",\"normalized_query\":\"pantalla Cavria\",\"structured_specs\":{},\"confidence\":0.84}\n\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -800,
+        -240
+      ],
+      "id": "80e44db7-ec23-41f9-a8c1-fd05ef910f0e",
+      "name": "Router"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d1334ff4-4bc3-4113-8b0a-55855059c626",
+              "leftValue": "={{ $json.output.mode }}",
+              "rightValue": "CARACTERISTICAS",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -736,
+        208
+      ],
+      "id": "95607b0f-4d4c-4d22-bb39-bbe30377e875",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "98b9199c-e5e5-4423-9e94-48246bad57f3",
+              "leftValue": "={{ $json.output.mode }}",
+              "rightValue": "FTS",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        208
+      ],
+      "id": "e1ed1b58-558d-4f2f-9aad-85f3e8a307f5",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM productos\nWHERE productid = '{{ $json.output.normalized_query }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        160
+      ],
+      "id": "52b7aaac-87d3-4b28-998b-08798bff4c55",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH q AS (\n  SELECT\n    unaccent_imm('{{ $json.output.normalized_query }}')                               AS q_text,\n    websearch_to_tsquery('spanish', unaccent_imm('{{ $json.output.normalized_query }}')) AS q_ts,\n    regexp_replace('{{ $json.output.normalized_query }}', '\\D', '', 'g')              AS q_digits -- por si la query es un EAN\n)\nSELECT\n  p.productid   AS id,\n  p.name,\n  p.pvp,\n  p.proveedor,\n  p.url,\n  p.stock,\n  ts_rank_cd(p.tsv, q.q_ts) AS fts_rank,\n  GREATEST(\n    similarity(unaccent_imm(p.name), q.q_text),\n    similarity(unaccent_imm(p.category), q.q_text),\n    similarity(unaccent_imm(p.subcategory), q.q_text)\n  ) AS trigram_sim,\n  (CASE WHEN p.ean = q.q_digits AND q.q_digits <> '' THEN 1.0 ELSE 0.0 END) AS ean_exact_bonus,\n  (\n    ts_rank_cd(p.tsv, q.q_ts) * 0.75\n    + GREATEST(\n        similarity(unaccent_imm(p.name), q.q_text),\n        similarity(unaccent_imm(p.category), q.q_text),\n        similarity(unaccent_imm(p.subcategory), q.q_text)\n      ) * 0.25\n    + (CASE WHEN p.ean = q.q_digits AND q.q_digits <> '' THEN 0.20 ELSE 0.0 END)\n  ) AS score\nFROM q, productos p\nWHERE\n      p.tsv @@ q.q_ts\n   OR unaccent_imm(p.name)        % q.q_text\n   OR unaccent_imm(p.category)    % q.q_text\n   OR unaccent_imm(p.subcategory) % q.q_text\n   OR (q.q_digits <> '' AND (p.ean = q.q_digits OR p.ean % q.q_digits))\nORDER BY score DESC, fts_rank DESC\nLIMIT 10;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        352
+      ],
+      "id": "1f12062c-9cbf-4066-9e41-4b45f7cd06c4",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const q = $input.first().json.output.normalized_query || '';\nconst s = $input.first().json.output.structured_specs || {};\nconst kv = [];\nfor (const [k,v] of Object.entries(s)) {\n  if (v === undefined || v === null || v === '') continue;\n  kv.push(`${k}:${String(v).toString().toLowerCase()}`);\n}\nconst specLine = kv.join('; ');\n// Texto final a embeder (claro y denso)\nconst embedding_text = specLine ? `${q} | ${specLine}` : q;\nreturn [{ embedding_text }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -144
+      ],
+      "id": "fc6a99b9-0783-4bb1-904e-2ee013c4e146",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH q AS (SELECT '{{$json.embedding}}'::vector AS q_vec)\nSELECT\n  d.metadata,\n  1 - (d.embedding <=> q.q_vec) AS cosine_sim\nFROM q, descripciones d\nORDER BY d.embedding <=> q.q_vec\nLIMIT 10;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        -144
+      ],
+      "id": "23fa5cf2-e6e9-484c-8912-e7dc32b5aed0",
+      "name": "Execute a SQL query2",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"text-embedding-3-small\",\n  \"input\": \"={{$json.embedding_text}}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        -144
+      ],
+      "id": "3fb21cf4-e208-4c75-ba32-fefcbdfcac7c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Si el HTTP node devuelve un array y NO lo dividiste en items\nconst root = Array.isArray($json) ? $json[0] : $json;\nconst vec = root.data[0].embedding;\nreturn [{ embedding: JSON.stringify(vec) }];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        -144
+      ],
+      "id": "6e6958df-1814-4221-a73b-d7da283992d8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT name, stock, url, proveedor, pvp\nFROM productos\nWHERE productid = '{{ $json.metadata.id }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        -144
+      ],
+      "id": "1281e89f-d3e1-4a10-917d-a59b7d718d3b",
+      "name": "Execute a SQL query3",
+      "credentials": {
+        "postgres": {
+          "id": "V2mOFsBQj25tGM1d",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Evalua los productos",
+        "options": {
+          "systemMessage": "=Recibirás información de varios productos en formato json {{ $json.productos.toJsonString() }} que te proporcionara el usuario.  \n\nTu tarea es:  \n1. Seleccionar primero el producto con el **precio de venta (pvp) más bajo**.  \n2. Los demás productos ordénalos en función de su **score** (de mayor a menor).  \n3. Devuelve el resultado en un **bloque de texto** con formato Texto válido, encerrado entre tres backticks.\n\n4. La salida debe seguir esta estructura sin backticks:\n\n5. No devuelvas nada entre backticks\n\n # Productos ordenados\n\n- **Nombre:** Nombre  \n  - **Precio:** 12.5  \n  - **Stock:** 4  \n  - **Proveedor:** DMI  \n  - **URL:** [Nombre](https://www.dmi.es/ficha/TP1038278)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        -96
+      ],
+      "id": "350cb11e-8fcf-417f-a521-df3516f0bd30",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1104,
+        144
+      ],
+      "id": "252fbf89-0c95-4b07-b0ab-08d24411e63d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z28ByYmtMzpGbseD",
+          "name": "OpenAi Punt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "productos",
+        "options": {
+          "includeBinaries": true
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -96
+      ],
+      "id": "bd619e94-210a-4629-ac69-ab3237c36515",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Evalua los productos",
+        "options": {
+          "systemMessage": "=Recibirás información de 1 producto.  \n\nTu tarea es:  \n1. Mostrar ese producto directamente.  \n2. Devuelve el resultado en un **bloque de texto** con formato Texto válido, encerrado entre tres backticks.  \n3. La salida debe seguir esta estructura:\n\nProducto:\n\nNombre\n   - Precio: \n   - Stock: \n   - Proveedor: \n   - URL: \n\n⚠️ No incluyas explicaciones ni texto adicional fuera del bloque de texto.\n\nDatos de entrada:\n\nProducto:\nid: {{ $json.productid }}\nnombre: {{ $json.name }}\nprecio de venta: {{ $json.pvp }}\nurl: {{ $json.url }}\nstock: {{ $json.stock }}\nproveedor: {{ $json.proveedor }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        208
+      ],
+      "id": "f5915359-7b6e-479f-9467-e82b9122c505",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        432
+      ],
+      "id": "9a3a9268-9b12-4059-8ceb-142fe3d0a8c0",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z28ByYmtMzpGbseD",
+          "name": "OpenAi Punt"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Router",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Router",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query2": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query3": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6c20ee2e5855197d5f6977c07b0003ed8d5f0bcf39cc89e23d8ee306f60b88a5"
+  }
+}

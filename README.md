@@ -28,7 +28,7 @@ It serves as a collection of reusable workflows, templates, and best practices t
 ---
 
 ## ⚡ Usage
-1. Clone the repository:
+1. Clone the repository
 2. Import a workflow into your n8n instance"
 3. Configure credentials and environment variables.
 4. Activate the workflow and enjoy automation
