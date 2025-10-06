@@ -1,4 +1,3 @@
-
 {
   "nodes": [
     {
@@ -231,7 +230,7 @@
             },
             {
               "name": "Authorization",
-              "value": "Bearer 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"
+              "value": "Bearer <REDACTED>"
             }
           ]
         },

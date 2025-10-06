@@ -347,7 +347,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $json.token }}"
+              "value": "Bearer <REDACTED>"
             }
           ]
         },
@@ -370,7 +370,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $json.token }}"
+              "value": "Bearer <REDACTED>"
             }
           ]
         },
